@@ -327,37 +327,6 @@ function formatInline(text: string) {
   )
 }
 
-// ─── ERROR BOUNDARY ───────────────────────────────────────────────────────────
-
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean; error: string }
-> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props)
-    this.state = { hasError: false, error: '' }
-  }
-  static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error: error.message }
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
-          <div className="text-center p-8 max-w-md">
-            <h2 className="text-xl font-semibold mb-2">Something went wrong</h2>
-            <p className="text-muted-foreground mb-4 text-sm">{this.state.error}</p>
-            <button onClick={() => this.setState({ hasError: false, error: '' })} className="px-4 py-2 bg-primary text-primary-foreground rounded-md text-sm">
-              Try again
-            </button>
-          </div>
-        </div>
-      )
-    }
-    return this.props.children
-  }
-}
-
 // ─── GLASS CARD ───────────────────────────────────────────────────────────────
 
 function GlassCard({ children, className }: { children: React.ReactNode; className?: string }) {
@@ -1005,20 +974,28 @@ export default function Page() {
 
   // Download handler
   const handleDownload = useCallback(() => {
-    const data = viewingHistoryRun || result
-    if (!data) return
+    const historyData = viewingHistoryRun
+    const resultData = result
+    if (!historyData && !resultData) return
 
     // Check for artifact files first
-    const artifacts = Array.isArray(data.artifactFiles) ? data.artifactFiles : []
+    const artifacts = historyData
+      ? (Array.isArray(historyData.artifactFiles) ? historyData.artifactFiles : [])
+      : (resultData && Array.isArray(resultData.artifactFiles) ? resultData.artifactFiles : [])
+
     if (artifacts.length > 0 && artifacts[0]?.file_url) {
       window.open(artifacts[0].file_url, '_blank')
       return
     }
 
     // Fallback: generate CSV client-side
-    const records = Array.isArray(data.cleanRecords) ? data.cleanRecords : []
-    downloadCSV(records, `leadforge_${data.fileName || 'clean_leads'}.csv`)
-  }, [result, viewingHistoryRun])
+    const records = historyData
+      ? (Array.isArray(historyData.cleanRecords) ? historyData.cleanRecords : [])
+      : (resultData && Array.isArray(resultData.cleanRecords) ? resultData.cleanRecords : [])
+
+    const fileName = historyData?.fileName || uploadedFile?.name || 'clean_leads'
+    downloadCSV(records, `leadforge_${fileName}.csv`)
+  }, [result, viewingHistoryRun, uploadedFile])
 
   // Sample data display
   const displayResult = showSample && !result ? {
@@ -1048,8 +1025,7 @@ export default function Page() {
   }, [])
 
   return (
-    <ErrorBoundary>
-      <div className="min-h-screen font-sans tracking-tight" style={{ background: 'linear-gradient(135deg, hsl(160, 40%, 94%) 0%, hsl(180, 35%, 93%) 30%, hsl(160, 35%, 95%) 60%, hsl(140, 40%, 94%) 100%)' }}>
+    <div className="min-h-screen font-sans tracking-tight" style={{ background: 'linear-gradient(135deg, hsl(160, 40%, 94%) 0%, hsl(180, 35%, 93%) 30%, hsl(160, 35%, 95%) 60%, hsl(140, 40%, 94%) 100%)' }}>
         {/* ─── HEADER ──────────────────────────────────────────── */}
         <header className="sticky top-0 z-40 backdrop-blur-[16px] bg-white/60 border-b border-white/[0.18]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -1156,7 +1132,7 @@ export default function Page() {
                         <Label className="text-xs text-muted-foreground">Output Format</Label>
                         <Select value={outputFormat} onValueChange={setOutputFormat} disabled={isProcessing}>
                           <SelectTrigger className="rounded-[0.625rem] bg-white/50">
-                            <SelectValue />
+                            <SelectValue placeholder="Select format" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="csv">CSV</SelectItem>
@@ -1367,6 +1343,5 @@ export default function Page() {
           </div>
         </div>
       </div>
-    </ErrorBoundary>
   )
 }
