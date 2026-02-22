@@ -1,0 +1,57 @@
+{
+  "agent_name": "Lead Processing Manager",
+  "agent_id": "699af2de0271d733cc3bee05",
+  "description": "Coordinates the validation, enrichment, and cleaning workflow across sub-agents; aggregates final results into a summary with downloadable output",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": true,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "LeadProcessingResponse",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "status": {"type": "string"},
+          "message": {"type": "string"},
+          "summary": {
+            "type": "object",
+            "properties": {
+              "total_records": {"type": "number"},
+              "valid_emails": {"type": "number"},
+              "invalid_emails": {"type": "number"},
+              "suspicious_emails": {"type": "number"},
+              "enriched_fields": {"type": "number"},
+              "duplicates_removed": {"type": "number"},
+              "quality_score": {"type": "number"}
+            },
+            "required": ["total_records", "valid_emails", "invalid_emails", "suspicious_emails", "enriched_fields", "duplicates_removed", "quality_score"],
+            "additionalProperties": false
+          },
+          "clean_records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "email": {"type": "string"},
+                "email_status": {"type": "string"},
+                "name": {"type": "string"},
+                "company": {"type": "string"},
+                "job_title": {"type": "string"},
+                "phone": {"type": "string"},
+                "linkedin_url": {"type": "string"},
+                "row_status": {"type": "string"},
+                "completeness": {"type": "number"}
+              },
+              "required": ["email", "email_status", "name", "company", "job_title", "phone", "linkedin_url", "row_status", "completeness"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["status", "message", "summary", "clean_records"],
+        "additionalProperties": false
+      }
+    }
+  }
+}

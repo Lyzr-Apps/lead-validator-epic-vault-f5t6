@@ -1,0 +1,54 @@
+{
+  "agent_name": "Clean Output Agent",
+  "agent_id": "699af2c778d0ec90a58b98a1",
+  "description": "Compiles validated and enriched records, removes duplicates, standardizes formats, and structures the final dataset per user's chosen output format",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": true,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "CleanOutputResponse",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "clean_records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "email": {"type": "string"},
+                "email_status": {"type": "string"},
+                "name": {"type": "string"},
+                "company": {"type": "string"},
+                "job_title": {"type": "string"},
+                "phone": {"type": "string"},
+                "linkedin_url": {"type": "string"},
+                "row_status": {"type": "string"},
+                "completeness": {"type": "number"}
+              },
+              "required": ["email", "email_status", "name", "company", "job_title", "phone", "linkedin_url", "row_status", "completeness"],
+              "additionalProperties": false
+            }
+          },
+          "summary": {
+            "type": "object",
+            "properties": {
+              "total_records": {"type": "number"},
+              "valid_emails": {"type": "number"},
+              "invalid_emails": {"type": "number"},
+              "enriched_fields": {"type": "number"},
+              "duplicates_removed": {"type": "number"},
+              "quality_score": {"type": "number"}
+            },
+            "required": ["total_records", "valid_emails", "invalid_emails", "enriched_fields", "duplicates_removed", "quality_score"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["clean_records", "summary"],
+        "additionalProperties": false
+      }
+    }
+  }
+}

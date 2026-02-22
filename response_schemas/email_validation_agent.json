@@ -1,0 +1,47 @@
+{
+  "agent_name": "Email Validation Agent",
+  "agent_id": "699af2c678d0ec90a58b989f",
+  "description": "Analyzes each email address for format validity, domain existence, common typo detection; flags entries as valid, invalid, or suspicious",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": false,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "EmailValidationResponse",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "validations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "email": {"type": "string"},
+                "status": {"type": "string"},
+                "reason": {"type": "string"},
+                "suggested_correction": {"type": "string"}
+              },
+              "required": ["email", "status", "reason", "suggested_correction"],
+              "additionalProperties": false
+            }
+          },
+          "summary": {
+            "type": "object",
+            "properties": {
+              "total": {"type": "number"},
+              "valid": {"type": "number"},
+              "invalid": {"type": "number"},
+              "suspicious": {"type": "number"}
+            },
+            "required": ["total", "valid", "invalid", "suspicious"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["validations", "summary"],
+        "additionalProperties": false
+      }
+    }
+  }
+}

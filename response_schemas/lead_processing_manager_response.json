@@ -1,0 +1,68 @@
+{
+  "agent_name": "Lead Processing Manager",
+  "agent_id": "699af2de0271d733cc3bee05",
+  "description": "Coordinates the validation, enrichment, and cleaning workflow across sub-agents; aggregates final results into a summary with downloadable output",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "status": "string",
+    "message": "string",
+    "summary": {
+      "total_records": "number",
+      "valid_emails": "number",
+      "invalid_emails": "number",
+      "suspicious_emails": "number",
+      "enriched_fields": "number",
+      "duplicates_removed": "number",
+      "quality_score": "number"
+    },
+    "clean_records": [
+      {
+        "email": "string",
+        "email_status": "string",
+        "name": "string",
+        "company": "string",
+        "job_title": "string",
+        "phone": "string",
+        "linkedin_url": "string",
+        "row_status": "string",
+        "completeness": "number"
+      }
+    ]
+  },
+  "example_response": {
+    "status": "sample string",
+    "message": "sample string",
+    "summary": {
+      "total_records": 0,
+      "valid_emails": 0,
+      "invalid_emails": 0,
+      "suspicious_emails": 0,
+      "enriched_fields": 0,
+      "duplicates_removed": 0,
+      "quality_score": 0
+    },
+    "clean_records": [
+      {
+        "email": "sample string",
+        "email_status": "sample string",
+        "name": "sample string",
+        "company": "sample string",
+        "job_title": "sample string",
+        "phone": "sample string",
+        "linkedin_url": "sample string",
+        "row_status": "sample string",
+        "completeness": 0
+      }
+    ]
+  },
+  "has_module_outputs": true,
+  "module_outputs_example": {
+    "artifact_files": [
+      {
+        "file_url": "https://example.com/file.pdf"
+      }
+    ]
+  }
+}

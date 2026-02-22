@@ -1,0 +1,10 @@
+{
+  "agents": {
+    "lead_processing_manager": "699af2de0271d733cc3bee05",
+    "email_validation_agent": "699af2c678d0ec90a58b989f",
+    "data_enrichment_agent": "699af2c778b54dbca31acb50",
+    "clean_output_agent": "699af2c778d0ec90a58b98a1"
+  },
+  "rag_ids": {},
+  "schedule_ids": {}
+}

@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {"id": "input_node", "type": "Input", "label": "CSV Upload", "nodeCategory": "input"},
+    {"id": "manager_agent", "type": "Agent", "label": "Lead Processing Manager", "nodeCategory": "agent"},
+    {"id": "email_validation_agent", "type": "Agent", "label": "Email Validation Agent", "nodeCategory": "agent"},
+    {"id": "data_enrichment_agent", "type": "Agent", "label": "Data Enrichment Agent", "nodeCategory": "agent"},
+    {"id": "clean_output_agent", "type": "Agent", "label": "Clean Output Agent", "nodeCategory": "agent"},
+    {"id": "output_node", "type": "Output", "label": "Validated Lead List", "nodeCategory": "end"}
+  ],
+  "edges": [
+    {"source": "input_node", "target": "manager_agent"},
+    {"source": "manager_agent", "target": "email_validation_agent"},
+    {"source": "manager_agent", "target": "data_enrichment_agent"},
+    {"source": "manager_agent", "target": "clean_output_agent"},
+    {"source": "clean_output_agent", "target": "output_node"}
+  ],
+  "agents": {
+    "lead_processing_manager": {
+      "id": "699af2de0271d733cc3bee05",
+      "name": "Lead Processing Manager",
+      "type": "manager"
+    },
+    "email_validation_agent": {
+      "id": "699af2c678d0ec90a58b989f",
+      "name": "Email Validation Agent",
+      "type": "sub-agent"
+    },
+    "data_enrichment_agent": {
+      "id": "699af2c778b54dbca31acb50",
+      "name": "Data Enrichment Agent",
+      "type": "sub-agent"
+    },
+    "clean_output_agent": {
+      "id": "699af2c778d0ec90a58b98a1",
+      "name": "Clean Output Agent",
+      "type": "sub-agent"
+    }
+  }
+}

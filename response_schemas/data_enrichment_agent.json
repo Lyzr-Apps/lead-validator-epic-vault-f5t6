@@ -1,0 +1,53 @@
+{
+  "agent_name": "Data Enrichment Agent",
+  "agent_id": "699af2c778b54dbca31acb50",
+  "description": "Searches public web sources to fill missing contact fields (name, company, job title, phone, LinkedIn) using available email/domain context",
+  "agent_type": "json",
+  "accessor": "json",
+  "has_module_outputs": false,
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
+      "name": "DataEnrichmentResponse",
+      "strict": true,
+      "schema": {
+        "type": "object",
+        "properties": {
+          "enriched_records": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "original_email": {"type": "string"},
+                "name": {"type": "string"},
+                "company": {"type": "string"},
+                "job_title": {"type": "string"},
+                "phone": {"type": "string"},
+                "linkedin_url": {"type": "string"},
+                "enrichment_status": {"type": "string"},
+                "fields_enriched": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                }
+              },
+              "required": ["original_email", "name", "company", "job_title", "phone", "linkedin_url", "enrichment_status", "fields_enriched"],
+              "additionalProperties": false
+            }
+          },
+          "summary": {
+            "type": "object",
+            "properties": {
+              "total_processed": {"type": "number"},
+              "records_enriched": {"type": "number"},
+              "fields_filled": {"type": "number"}
+            },
+            "required": ["total_processed", "records_enriched", "fields_filled"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["enriched_records", "summary"],
+        "additionalProperties": false
+      }
+    }
+  }
+}
